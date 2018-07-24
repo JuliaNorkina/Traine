@@ -4,13 +4,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FirstActivity extends AppCompatActivity implements View.OnClickListener {
 
     TextView tvInfo;
     Button bEnterData;
+    ArrayList<Customer> customers = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,9 +37,8 @@ public class FirstActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (data == null) return;
-        String string = "FIO: " + data.getStringExtra("fio") + ", age: " + data.getStringExtra("age");
-        tvInfo.setText(string);
+        customers = data.getParcelableArrayListExtra("Customers data");
+        tvInfo.setText(customers.toString().replace("[","").replace("]","").replace(",",""));
         super.onActivityResult(requestCode, resultCode, data);
     }
 }
