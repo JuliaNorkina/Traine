@@ -14,9 +14,9 @@ import java.util.List;
 
 public class FirstActivity extends AppCompatActivity implements View.OnClickListener {
 
-    TextView tvInfo;
-    Button bEnterData;
-    ArrayList<Customer> customers = new ArrayList<>();
+    private TextView tvInfo;
+    public static final String CUSTOMERS_DATA = "Customers data";
+    private final int REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +24,7 @@ public class FirstActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.first);
 
         tvInfo = findViewById(R.id.tvInfo);
-        bEnterData = findViewById(R.id.bEnterData);
+        Button bEnterData = findViewById(R.id.bEnterData);
 
         bEnterData.setOnClickListener(this);
     }
@@ -32,13 +32,15 @@ public class FirstActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         Intent intent = new Intent(this, SecondActivity.class);
-        startActivityForResult(intent, 1);
+        startActivityForResult(intent, REQUEST_CODE);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        customers = data.getParcelableArrayListExtra("Customers data");
-        tvInfo.setText(customers.toString().replace("[","").replace("]","").replace(",",""));
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK){
+            ArrayList<Customer> customers = data.getParcelableArrayListExtra(CUSTOMERS_DATA);
+            tvInfo.setText(customers.toString().replace("[","").replace("]","").replace(",",""));
+        }
         super.onActivityResult(requestCode, resultCode, data);
     }
 }
